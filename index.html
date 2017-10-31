@@ -6,22 +6,35 @@
   </head>
   <body>
     <script>
-
-      $(document).ready(function(){
+    
+      function getStream() {
         var $body = $('body');
         $body.html('');
 
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
+          
+          var time = tweet.created_at.toString().slice(0, 24);
+          
+          //var user = 
+          
+          var $tweet = $('<p></p>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          var $time = $('<footer></footer>')
+          $time.text(time);
+          $time.appendTo($tweet);
           $tweet.appendTo($body);
           index -= 1;
         }
+      }
 
-      });
-
+      $(document).ready(getStream());
+      
+      setInterval(function(){
+        getStream();
+      }, 500);
+      
     </script>
   </body>
 </html>
