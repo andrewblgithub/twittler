@@ -10,43 +10,69 @@
   </head>
 
   <body>
-    <br>
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-6" id="title">Latest Tweets</h1>
+      </div>
+    </div>
     <div class="container">
       <button class="btn btn-primary" id="refresh">Refresh Feed</button>
     </div>
     <br>
-    <div class="container">
+
+    <div class="container" id="main">
       <div class="list-group" id="feed">
-        
       </div>
     </div>
 
-    <script>
+      <script>
     
       function getStream() {
         var $feed = $('#feed');
         $feed.html('');
         var index = streams.home.length - 1;
-        
         while(index >= 0){
           var tweet = streams.home[index];
-          
           var time = tweet.created_at.toString().slice(0, 24);
-          
           var user = tweet.user;
-          
           var $tweet = $('<a href="#" class="list-group-item list-group-item-action"></a>');
+          $tweet.on("click", function() {
+            getUser(this.id); 
+          });
+          $tweet.attr("id", user)
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
           var $time = $('<footer></footer>')
           $time.text(time);
           $time.appendTo($tweet);
           $tweet.appendTo($feed);
           index -= 1;
-
-          console.log(user.toString());
         }
       }
-      
+
+      function getUser(user) {
+        $('#title').text('afjalsf');
+        var $feed = $('#feed');
+        console.log(user);
+        $feed.html('');
+        var index = streams.home.length - 1;
+        while(index >= 0){
+          var tweet = streams.home[index];
+          var time = tweet.created_at.toString().slice(0, 24);
+          var user = tweet.user;
+          var $tweet = $('<a href="#" class="list-group-item list-group-item-action"></a>');
+          $tweet.on("click", function() {
+            getUser(this.id); 
+          });
+          $tweet.attr("id", user)
+          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          var $time = $('<footer></footer>')
+          $time.text(time);
+          $time.appendTo($tweet);
+          $tweet.appendTo($feed);
+          index -= 1;
+        }
+      }
+
       $('#refresh').click(function(){getStream();});
 
       $(document).ready(getStream());
