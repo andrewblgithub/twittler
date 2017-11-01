@@ -54,17 +54,17 @@
         var $feed = $('#feed');
         console.log(user);
         $feed.html('');
-        var index = streams.home.length - 1;
+        var userStream = streams.users[user];
+        var index = userStream.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
           var time = tweet.created_at.toString().slice(0, 24);
-          var user = tweet.user;
           var $tweet = $('<a href="#" class="list-group-item list-group-item-action"></a>');
           $tweet.on("click", function() {
             getUser(this.id); 
           });
           $tweet.attr("id", user)
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          $tweet.text('@' + user + ': ' + tweet.message);
           var $time = $('<footer></footer>')
           $time.text(time);
           $time.appendTo($tweet);
@@ -73,7 +73,14 @@
         }
       }
 
-      $('#refresh').click(function(){getStream();});
+      $('#refresh').click(function(){
+        var $title = $('#title');
+        if ($title === 'Latest Tweets') {
+          getStream();
+        } else {
+          getUsers();
+        }
+      });
 
       $(document).ready(getStream());
       
