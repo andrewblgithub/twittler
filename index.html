@@ -15,7 +15,7 @@
         <h1 class="display-6" id="title">Latest Tweets</h1>
       </div>
     </div>
-    <div class="container">
+    <div class="container" id="buttons">
       <button class="btn btn-primary" id="refresh">Refresh Feed</button>
     </div>
     <br>
@@ -50,12 +50,21 @@
       }
 
       function getUser(user) {
-        $('#title').text('afjalsf');
+        $('#title').text(user);
         var $feed = $('#feed');
         console.log(user);
         $feed.html('');
         var userStream = streams.users[user];
         var index = userStream.length - 1;
+        if ($("#homeBtn").html() === undefined) {
+          var homeBtn = $('<button class="btn btn-primary" id="homeBtn">Home</button>');
+          $("#buttons").append(homeBtn);
+          homeBtn.on("click", function() {
+            getStream();
+            $('#title').text('Latest Tweets');
+            $('#homeBtn').remove();
+          });
+        }
         while(index >= 0){
           var tweet = streams.home[index];
           var time = tweet.created_at.toString().slice(0, 24);
@@ -74,16 +83,16 @@
       }
 
       $('#refresh').click(function(){
-        var $title = $('#title');
-        if ($title === 'Latest Tweets') {
+        var title = $('#title').text();
+        if (title === 'Latest Tweets') {
           getStream();
         } else {
-          getUsers();
+          getUser(title);
         }
       });
 
       $(document).ready(getStream());
-      
+
     </script>
   </body>
 </html>
